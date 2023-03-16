@@ -1,15 +1,5 @@
 # Sample Hardhat Starter Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
-
-> "ethereum-waffle": "^4.0.10", removed from package.json
+- for deploying the contract check the deploy.js
+- for communication with other contract, check the deployWinner.js
+- PRT ON MATIC: 0x596fBCB7dC8128546661302B3Fa560ABB4a27A75

@@ -5,22 +5,30 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+require('dotenv').config();
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  // const [deployer] = await hre.ethers.getSigners();
+  // console.log("Deploying contracts with the account: ", deployer.address);
+  // const weiAmount = (await deployer.getBalance()).toString();
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+  // console.log("Account Balance: ", (await ethers.utils.formatEther(weiAmount)));
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  // const Token = await ethers.getContractFactory("Pirate");
+  // const token = await Token.deploy();
 
-  await lock.deployed();
+  // console.log("Token address:", token.address);
 
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  const url = process.env.MATIC_URL;
+  let artifacts = await hre.artifacts.readArtifact("PirateToken");
+  const provider = new ethers.providers.JsonRpcProvider(url);
+  let privateKey = process.env.OWNER_PRIVATE_KEY;
+  let wallet = new ethers.Wallet(privateKey, provider);
+  // Create an instance of a Faucet Factory
+  let factory = new ethers.ContractFactory(artifacts.abi, artifacts.bytecode, wallet);
+  let faucet = await factory.deploy();
+  console.log("Contract Address: ", faucet.address);
+  await faucet.deployed();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
@@ -29,3 +37,4 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+//  New Token Address
